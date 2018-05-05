@@ -12,11 +12,13 @@
 
 (defn message
   [ind {:keys [id title description class]}]
-  ^{:key (str "msg-" id)}
-  [:div {:class class :style {:top (top-position-px-from-ind ind 75)}}
-   [:div {:class "title"} title
-    (close-button id)]
-   [:div {:class "description"} description]])
+  (let [key-id (str "msg-" id)]
+    ^{:key key-id}
+    [:div {:id key-id
+           :class class
+           :style {:top (top-position-px-from-ind ind)}}
+     [:div {:class "title"} title (close-button id)]
+     [:div {:class "description"} description]]))
 
 (defn messages-container
   "If there are messages in the app-state create a message component
