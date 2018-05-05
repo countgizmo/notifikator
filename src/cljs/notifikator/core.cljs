@@ -13,7 +13,7 @@
 
 (defn mount-root []
   (re-frame/clear-subscription-cache!)
-  (reagent/render [views/messages-container]
+  (reagent/render [views/test-view]
                   (.getElementById js/document "app")))
 
 (defn ^:export init []
