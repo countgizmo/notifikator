@@ -1,7 +1,7 @@
 (ns notifikator.events
   (:require [re-frame.core :as re-frame]
             [notifikator.db :as db]
-            [notifikator.util :refer [remove-by-id]]))
+            [notifikator.util :refer [remove-by-id next-msg-id]]))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -11,7 +11,8 @@
 (re-frame/reg-event-db
   ::spawn-message
   (fn [db [_ flavor]]
-    (let [msg {:id 1
+    (let [id (next-msg-id db)
+          msg {:id id
                :title "Please note"
                :description "Your fridge is running"
                :class flavor}]

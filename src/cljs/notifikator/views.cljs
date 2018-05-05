@@ -1,7 +1,8 @@
 (ns notifikator.views
   (:require [re-frame.core :as re-frame]
             [notifikator.subs :as subs]
-            [notifikator.events :as events]))
+            [notifikator.events :as events]
+            [notifikator.util :refer [top-position-px-from-ind]]))
 
 (defn close-button
   [id]
@@ -10,9 +11,9 @@
    "X"])
 
 (defn message
-  [{:keys [id title description class]}]
+  [ind {:keys [id title description class]}]
   ^{:key (str "msg-" id)}
-  [:div {:class class}
+  [:div {:class class :style {:top (top-position-px-from-ind ind 75)}}
    [:div {:class "title"} title
     (close-button id)]
    [:div {:class "description"} description]])
@@ -23,7 +24,7 @@
   []
   (when-let [messages (re-frame/subscribe [::subs/messages])]
     [:div.messages
-     (map message @messages)]))
+     (map-indexed message @messages)]))
 
 
 ;;; The Control Panel for playing with the messages
