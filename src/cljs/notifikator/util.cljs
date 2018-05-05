@@ -23,8 +23,8 @@
    Get the message's Y coordinate and height value.
    Plust them together to get the offset for the next message."
   [ind]
-  (let [id (str "msg-" ind)]
-    (if-let [rect (.getBoundingClientRect (dom/getElement id))]
+  (let [el (nth (array-seq (dom/getElementsByClass "message")) ind)]
+    (if-let [rect (.getBoundingClientRect el)]
       (+ (.-y rect) (.-height rect))
       0)))
 

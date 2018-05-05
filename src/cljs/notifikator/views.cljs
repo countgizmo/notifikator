@@ -12,13 +12,11 @@
 
 (defn message
   [ind {:keys [id title description class]}]
-  (let [key-id (str "msg-" id)]
-    ^{:key key-id}
-    [:div {:id key-id
-           :class class
-           :style {:top (top-position-px-from-ind ind)}}
-     [:div {:class "title"} title (close-button id)]
-     [:div {:class "description"} description]]))
+  ^{:key (str "msg-" id)}
+  [:div {:class class
+         :style {:top (top-position-px-from-ind ind)}}
+   [:div {:class "title"} title (close-button id)]
+   [:div {:class "description"} description]])
 
 (defn messages-container
   "If there are messages in the app-state create a message component
@@ -32,18 +30,36 @@
 ;;; The Control Panel for playing with the messages
 ;;; Will not go to prod! ;)
 
+(defn generate-message-button
+  [title event]
+  [:button
+     {:on-click #(re-frame.core/dispatch event)}
+     title])
+
 (defn generate-info-message
   []
-  (let [event [::events/spawn-message "info message"]]
-    [:button
-     {:on-click
-       #(re-frame.core/dispatch event)}
-     "Spawn Info Message!"]))
+  (generate-message-button
+    "Spawn Info Message!"
+    [::events/spawn-message "info message"]))
+
+(defn generate-warning-message
+  []
+  (generate-message-button
+    "Spawn Warning Message!"
+    [::events/spawn-message "warning message"]))
+
+(defn generate-error-message
+  []
+  (generate-message-button
+    "Spawn Error Message!"
+    [::events/spawn-message "error message"]))
 
 (defn playground
   []
   [:div.playground
-   (generate-info-message)])
+   (generate-info-message)
+   (generate-warning-message)
+   (generate-error-message)])
 
 (defn test-view
   []

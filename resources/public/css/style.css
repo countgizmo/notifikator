@@ -2,13 +2,21 @@
   position: absolute;
   top: 10px;
   right: 30px;
-  border:1px solid grey;
   font-family: Helvetica, sans-serif;
 }
 
 .info {
   background-color: #0074D9;
-  border-color: #0074D9;
+  color: white;
+}
+
+.warning {
+  background-color: #FFDC00;
+  color: #001f3f;
+}
+
+.error {
+  background-color: #FF4136;
   color: white;
 }
 
