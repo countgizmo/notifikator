@@ -9,18 +9,19 @@
    db/default-db))
 
 (defn handle-message
-  [db [_ title description] flavor]
-  (let [id (next-msg-id db)
-        msg {:id id
-             :title title
-             :description description
-             :class flavor}]
-    (update db :messages conj msg)))
+  ([db effect flavor] (handle-message db (conj effect flavor)))
+  ([db [_ title description flavor]]
+   (let [id (next-msg-id db)
+         msg {:id id
+              :title title
+              :description description
+              :class flavor}]
+     (update db :messages conj msg))))
 
 (re-frame/reg-event-db
   ::spawn-message
-  (fn [db effect flavor]
-    (handle-message db effect flavor)))
+  (fn [db effect]
+    (handle-message db effect)))
 
 (re-frame/reg-event-db
   ::spawn-info-message
@@ -40,4 +41,4 @@
 (re-frame/reg-event-db
   ::close-message
   (fn [db [_ id]]
-    (update-in db [:messages] remove-by-id id)))
+    (update db :messages remove-by-id id)))

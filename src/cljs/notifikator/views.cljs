@@ -21,10 +21,9 @@
   "If there are messages in the app-state create a message component
    for each of them. Otherwise return nil. Which is fine for Hiccup."
   []
-  (when-let [messages (re-frame/subscribe [::subs/messages])]
+  (let [messages (re-frame/subscribe [::subs/messages])]
     [:div {:class "messages-container"}
      (map-indexed message @messages)]))
-
 
 ;;; The Control Panel for playing with the messages
 ;;; Will not go to prod! ;)
@@ -73,7 +72,6 @@
 
 (defn test-view
   []
-  ^{:key "wold-is-a-simulation"}
   [:div.world
    [playground]
    [messages-container]])
