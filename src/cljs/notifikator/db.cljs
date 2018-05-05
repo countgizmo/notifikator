@@ -4,5 +4,5 @@
   {:messages
     [{:id 1
       :title "Hello"
-      :text "There's nothing to be afraid of"
-      :class "info-message"}]})
+      :description "There's nothing to be afraid of"
+      :class "info message"}]})

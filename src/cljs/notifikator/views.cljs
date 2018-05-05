@@ -3,13 +3,13 @@
             [notifikator.subs :as subs]))
 
 (defn message
-  [{:keys [title text class]}]
+  [{:keys [title description class]}]
   [:div {:class class}
-   [:div title
-    [:p text]]])
+   [:div {:class "title"} title]
+   [:div {:class "description"} description]])
 
 (defn messages-container
   []
-  (let [messages (re-frame/subscribe [::subs/messages])]
+  (when-let [messages (re-frame/subscribe [::subs/messages])]
     [:div.messages
      (map message @messages)]))
