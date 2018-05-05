@@ -2,8 +2,7 @@
   (:require [reagent.core :as reagent]
             [re-frame.core :as re-frame]
             [notifikator.subs :as subs]
-            [notifikator.events :as events]
-            [notifikator.util :refer [top-position-px-from-ind]]))
+            [notifikator.events :as events]))
 
 (defn close-button
   [id]
@@ -14,8 +13,7 @@
 (defn message
   [ind {:keys [id title description class]}]
   ^{:key (str "msg-" id)}
-  [:div {:class class
-         :style {:top (top-position-px-from-ind ind)}}
+  [:div {:class class}
    [:div {:class "title"} title (close-button id)]
    [:div {:class "description"} description]])
 
@@ -24,7 +22,7 @@
    for each of them. Otherwise return nil. Which is fine for Hiccup."
   []
   (when-let [messages (re-frame/subscribe [::subs/messages])]
-    [:div.messages
+    [:div {:class "messages-container"}
      (map-indexed message @messages)]))
 
 
@@ -39,21 +37,21 @@
 
 (defn generate-info-message
   [title description]
-  (generate-message-button
+  [generate-message-button
     "Spawn Info Message!"
-    [::events/spawn-info-message title description]))
+    [::events/spawn-info-message title description]])
 
 (defn generate-warning-message
   [title description]
-  (generate-message-button
+  [generate-message-button
     "Spawn Warning Message!"
-    [::events/spawn-warning-message title description]))
+    [::events/spawn-warning-message title description]])
 
 (defn generate-error-message
   [title description]
-  (generate-message-button
+  [generate-message-button
     "Spawn Error Message!"
-    [::events/spawn-error-message title description]))
+    [::events/spawn-error-message title description]])
 
 (defn playground
   []
@@ -69,13 +67,13 @@
          [:textarea {:value @description
                      :on-change #(reset! description (-> % .-target .-value))}]]]
        [:div.buttons
-        (generate-info-message @title @description)
-        (generate-warning-message @title @description)
-        (generate-error-message @title @description)]])))
+        [generate-info-message @title @description]
+        [generate-warning-message @title @description]
+        [generate-error-message @title @description]]])))
 
 (defn test-view
   []
   ^{:key "wold-is-a-simulation"}
   [:div.world
    [playground]
-   (messages-container)])
+   [messages-container]])
