@@ -1,5 +1,6 @@
 (ns notifikator.views
-  (:require [re-frame.core :as re-frame]
+  (:require [reagent.core :as reagent]
+            [re-frame.core :as re-frame]
             [notifikator.subs :as subs]
             [notifikator.events :as events]
             [notifikator.util :refer [top-position-px-from-ind]]))
@@ -37,33 +38,44 @@
      title])
 
 (defn generate-info-message
-  []
+  [title description]
   (generate-message-button
     "Spawn Info Message!"
-    [::events/spawn-message "info message"]))
+    [::events/spawn-info-message title description]))
 
 (defn generate-warning-message
-  []
+  [title description]
   (generate-message-button
     "Spawn Warning Message!"
-    [::events/spawn-message "warning message"]))
+    [::events/spawn-warning-message title description]))
 
 (defn generate-error-message
-  []
+  [title description]
   (generate-message-button
     "Spawn Error Message!"
-    [::events/spawn-message "error message"]))
+    [::events/spawn-error-message title description]))
 
 (defn playground
   []
-  [:div.playground
-   (generate-info-message)
-   (generate-warning-message)
-   (generate-error-message)])
+  (let [title (reagent/atom "Title")
+        description (reagent/atom "Description")]
+    (fn []
+      [:div.playground
+       [:div
+        [:input {:type :text
+                 :value @title
+                 :on-change #(reset! title (-> % .-target .-value))}]
+        [:div
+         [:textarea {:value @description
+                     :on-change #(reset! description (-> % .-target .-value))}]]]
+       [:div.buttons
+        (generate-info-message @title @description)
+        (generate-warning-message @title @description)
+        (generate-error-message @title @description)]])))
 
 (defn test-view
   []
   ^{:key "wold-is-a-simulation"}
   [:div.world
-   (playground)
+   [playground]
    (messages-container)])

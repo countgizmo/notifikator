@@ -8,15 +8,34 @@
  (fn [_ _]
    db/default-db))
 
+(defn handle-message
+  [db [_ title description] flavor]
+  (let [id (next-msg-id db)
+        msg {:id id
+             :title title
+             :description description
+             :class flavor}]
+    (update db :messages conj msg)))
+
 (re-frame/reg-event-db
   ::spawn-message
-  (fn [db [_ flavor]]
-    (let [id (next-msg-id db)
-          msg {:id id
-               :title "Please note"
-               :description "Your fridge is running"
-               :class flavor}]
-      (update db :messages conj msg))))
+  (fn [db effect flavor]
+    (handle-message db effect flavor)))
+
+(re-frame/reg-event-db
+  ::spawn-info-message
+  (fn [db effect]
+    (handle-message db effect "info message")))
+
+(re-frame/reg-event-db
+  ::spawn-warning-message
+  (fn [db effect]
+    (handle-message db effect "warning message")))
+
+(re-frame/reg-event-db
+  ::spawn-error-message
+  (fn [db effect]
+    (handle-message db effect "error message")))
 
 (re-frame/reg-event-db
   ::close-message
