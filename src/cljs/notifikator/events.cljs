@@ -10,7 +10,7 @@
 
 (re-frame/reg-event-db
   ::spawn-message
-  (fn [{:keys [db]} [_ flavor]]
+  (fn [db [_ flavor]]
     (let [msg {:id 1
                :title "Please note"
                :description "Your fridge is running"
@@ -19,5 +19,5 @@
 
 (re-frame/reg-event-db
   ::close-message
-  (fn [{:keys [db]} [_ id]]
-    (update-in d [:messages] remove-by-id id)))
+  (fn [db [_ id]]
+    (update-in db [:messages] remove-by-id id)))
