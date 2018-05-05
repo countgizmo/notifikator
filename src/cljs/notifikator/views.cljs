@@ -3,14 +3,23 @@
             [notifikator.subs :as subs]
             [notifikator.events :as events]))
 
+(defn close-button
+  [id]
+  [:div {:class "close"
+         :on-click #(re-frame.core/dispatch [::events/close-message id])}
+   "X"])
+
 (defn message
   [{:keys [id title description class]}]
   ^{:key (str "msg-" id)}
   [:div {:class class}
-   [:div {:class "title"} title]
+   [:div {:class "title"} title
+    (close-button id)]
    [:div {:class "description"} description]])
 
 (defn messages-container
+  "If there are messages in the app-state create a message component
+   for each of them. Otherwise return nil. Which is fine for Hiccup."
   []
   (when-let [messages (re-frame/subscribe [::subs/messages])]
     [:div.messages

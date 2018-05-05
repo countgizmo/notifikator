@@ -3,7 +3,7 @@
   top: 10px;
   right: 30px;
   border:1px solid grey;
-  font-family: helvetica;
+  font-family: Helvetica, sans-serif;
 }
 
 .info {
@@ -16,6 +16,7 @@
   padding-left: 5px;
   padding-top: 5px;
   font-weight: bold;
+  height: 15px;
 }
 
 .description {
@@ -25,4 +26,14 @@
   padding-top: 10px;
   padding-bottom: 5px;
   font-weight: normal;
+}
+
+.close {
+  float: right;
+  padding-right: 10px;
+  font-weight: normal;
+}
+
+.close:hover {
+  cursor: pointer;
 }
