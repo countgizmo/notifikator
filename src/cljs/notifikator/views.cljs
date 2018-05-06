@@ -11,6 +11,9 @@
          :on-click #(re-frame.core/dispatch [::events/close-message id])}
    "X"])
 
+(def css-transition-group
+  (reagent/adapt-react-class js/React.addons.CSSTransitionGroup))
+
 (defn message
   [ind {:keys [id title description flavor]}]
   ^{:key (str "msg-" id)}
@@ -24,7 +27,10 @@
   []
   (let [messages (re-frame/subscribe [::subs/messages])]
     [:div {:class "messages-container"}
-     (map-indexed message @messages)]))
+     [css-transition-group {:transitionName "message"
+                            :transitionEnterTimeout 500
+                            :transitionLeaveTimeout 300}
+      (map-indexed message @messages)]]))
 
 ;;; The Control Panel for playing with the messages
 ;;; Will not go to prod! ;)
