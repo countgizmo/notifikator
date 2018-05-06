@@ -18,8 +18,7 @@
 
 (defn dispatch-timer-event
   []
-  (let [now (js/Date.)]
-    (re-frame/dispatch [::events/timer now])))
+  (re-frame/dispatch [::events/clean-old-messages]))
 
 (defn ^:export init []
   (re-frame/dispatch-sync [::events/initialize-db])

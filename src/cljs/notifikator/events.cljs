@@ -13,7 +13,7 @@
 
 (defn handle-message
   ([db effect flavor]
-   (let [effect (assoc-in effect [1 :flavor] (str flavor))]
+   (let [effect (assoc-in effect [1 :flavor] flavor)]
      (handle-message db effect)))
   ([db [_ message]]
    (let [id (next-msg-id db)
@@ -47,7 +47,13 @@
   (fn [db [_ id]]
     (update db :messages remove-by-id id)))
 
-(re-frame/reg-event-db
-  ::timer
-  (fn [db [_ new-time]]
-    (update db :messages remove-by-time new-time)))
+(re-frame/reg-cofx
+  :now
+  (fn [coeffects _]
+    (assoc coeffects :now (js/Date.))))
+
+(re-frame/reg-event-fx
+  ::clean-old-messages
+  [(re-frame/inject-cofx :now)]
+  (fn [{:keys [db now]} _]
+    {:db (update db :messages remove-by-time now)}))
