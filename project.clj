@@ -2,7 +2,8 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.908"]
                  [reagent "0.7.0"]
-                 [re-frame "0.10.5"]]
+                 [re-frame "0.10.5"]
+                 [proto-repl "0.3.1"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
@@ -17,9 +18,8 @@
   :profiles
   {:dev
    {:dependencies [[binaryage/devtools "0.9.4"]]
-
     :plugins      [[lein-figwheel "0.5.13"]]}
-   :prod { }}
+   :prod {}}
 
   :cljsbuild
   {:builds
@@ -32,8 +32,8 @@
                     :asset-path           "js/compiled/out"
                     :source-map-timestamp true
                     :preloads             [devtools.preload]
-                    :external-config      {:devtools/config {:features-to-install :all}}
-                    }}
+                    :external-config      {:devtools/config {:features-to-install :all}}}}
+
 
     {:id           "min"
      :source-paths ["src/cljs"]
@@ -41,9 +41,4 @@
                     :output-to       "resources/public/js/compiled/app.js"
                     :optimizations   :advanced
                     :closure-defines {goog.DEBUG false}
-                    :pretty-print    false}}
-
-
-    ]}
-
-  )
+                    :pretty-print    false}}]})

@@ -2,6 +2,5 @@
   (:require [re-frame.core :as re-frame]))
 
 (re-frame/reg-sub
- ::name
- (fn [db]
-   (:name db)))
+ ::messages
+ (fn [{:keys [messages]}] messages))
