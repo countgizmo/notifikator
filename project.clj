@@ -3,7 +3,8 @@
                  [org.clojure/clojurescript "1.9.908"]
                  [reagent "0.7.0"]
                  [re-frame "0.10.5"]
-                 [proto-repl "0.3.1"]]
+                 [proto-repl "0.3.1"]
+                 [cljsjs/react-with-addons "15.6.1-0"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
