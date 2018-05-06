@@ -16,7 +16,12 @@
   (reagent/render [views/test-view]
                   (.getElementById js/document "app")))
 
+(defn dispatch-timer-event
+  []
+  (re-frame/dispatch [::events/clean-old-messages]))
+
 (defn ^:export init []
   (re-frame/dispatch-sync [::events/initialize-db])
+  (defonce do-timer (js/setInterval dispatch-timer-event 1000))
   (dev-setup)
   (mount-root))

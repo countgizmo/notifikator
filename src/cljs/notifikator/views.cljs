@@ -2,7 +2,8 @@
   (:require [reagent.core :as reagent]
             [re-frame.core :as re-frame]
             [notifikator.subs :as subs]
-            [notifikator.events :as events]))
+            [notifikator.events :as events]
+            [clojure.string :refer [blank?]]))
 
 (defn close-button
   [id]
@@ -11,9 +12,9 @@
    "X"])
 
 (defn message
-  [ind {:keys [id title description class]}]
+  [ind {:keys [id title description flavor]}]
   ^{:key (str "msg-" id)}
-  [:div {:class class}
+  [:div {:class flavor}
    [:div {:class "title"} title (close-button id)]
    [:div {:class "description"} description]])
 
@@ -35,27 +36,34 @@
      title])
 
 (defn generate-info-message
-  [title description]
+  [title description ttl]
   [generate-message-button
     "Spawn Info Message!"
-    [::events/spawn-info-message title description]])
+    [::events/spawn-info-message
+     {:title title :description description
+      :ttl (when-not (blank? ttl) (int ttl))}]])
 
 (defn generate-warning-message
-  [title description]
+  [title description ttl]
   [generate-message-button
     "Spawn Warning Message!"
-    [::events/spawn-warning-message title description]])
+    [::events/spawn-warning-message
+     {:title title :description description
+       :ttl (when-not (blank? ttl) (int ttl))}]])
 
 (defn generate-error-message
-  [title description]
+  [title description ttl]
   [generate-message-button
     "Spawn Error Message!"
-    [::events/spawn-error-message title description]])
+    [::events/spawn-error-message
+     {:title title :description description
+      :ttl (when-not (blank? ttl) (int ttl))}]])
 
 (defn playground
   []
   (let [title (reagent/atom "Title")
-        description (reagent/atom "Description")]
+        description (reagent/atom "Description")
+        ttl (reagent/atom "")]
     (fn []
       [:div.playground
        [:div
@@ -64,11 +72,16 @@
                  :on-change #(reset! title (-> % .-target .-value))}]
         [:div
          [:textarea {:value @description
-                     :on-change #(reset! description (-> % .-target .-value))}]]]
+                     :on-change #(reset! description (-> % .-target .-value))}]]
+        [:div
+         [:div "TTL (ms):"]
+         [:input {:type :text
+                  :value @ttl
+                  :on-change #(reset! ttl (-> % .-target .-value))}]]]
        [:div.buttons
-        [generate-info-message @title @description]
-        [generate-warning-message @title @description]
-        [generate-error-message @title @description]]])))
+        [generate-info-message @title @description @ttl]
+        [generate-warning-message @title @description @ttl]
+        [generate-error-message @title @description @ttl]]])))
 
 (defn test-view
   []

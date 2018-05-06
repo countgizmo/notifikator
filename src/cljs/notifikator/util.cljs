@@ -16,3 +16,19 @@
     (-> (apply max-key :id messages)
         :id
         inc)))
+
+(defn add-ms-to-now
+  [ms]
+  (when ms
+    (let [now (js/Date.)]
+      (js/Date. (+ (.getTime now) ms)))))
+
+(defn remove-by-time
+  "Removing all elements that have destroy-at value greater or equal to now."
+  [coll t]
+  (remove
+    (fn [msg]
+      (if-let [destroy-at (:destroy-at msg)]
+        (>= t destroy-at)
+        false))
+    coll))
