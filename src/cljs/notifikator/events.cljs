@@ -13,7 +13,7 @@
 
 (defn handle-message
   ([db effect flavor]
-   (let [effect (assoc-in effect [1 :flavor] (str flavor))]
+   (let [effect (assoc-in effect [1 :flavor] flavor)]
      (handle-message db effect)))
   ([db [_ message]]
    (let [id (next-msg-id db)
